@@ -26,12 +26,11 @@ namespace ShoeCompany
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // Configure Swagger
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
                     Title = "NorthWindShoes Products",
                     Version = "v1",
@@ -55,7 +54,7 @@ namespace ShoeCompany
             app.UseMvc();
             app.UseSwagger(c =>
             {
-                c.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc.Host = httpReq.Host.Value);
+              //  c.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc = httpReq.Host.Value);
             });
             app.UseSwaggerUI(c =>
             {
