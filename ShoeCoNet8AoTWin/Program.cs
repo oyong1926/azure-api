@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using SBusNet8AoTWin;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization; // Add this using directive for Swagger support
@@ -48,12 +49,21 @@ todosApi.MapPost("/{id}", async (HttpRequest request) =>
     app.Logger.LogInformation($"REceived a post req for student : ");
    var body = new StreamReader(request.Body);
     string postData = await body.ReadToEndAsync();
-    Dictionary<string, dynamic> keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, dynamic>>(postData) ?? new Dictionary<string, dynamic>();
-// here after you can play as you like :)
-    var x = sampleTodos.FirstOrDefault(a => a.Id == 2) is { } todo
-    ? Results.Ok(todo)
-    : Results.NotFound();
-
+    app.Logger.LogInformation($"Extracted string for student : {postData}");
+    Debug.WriteLine($"Extracted string for student : {postData}");
+    /*
+     Dictionary<string, dynamic> keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, dynamic>>(postData) ?? new Dictionary<string, dynamic>();
+     // here after you can play as you like :)
+     // For example, you can access the values like this:    
+     foreach (var kvp in keyValuePairs)
+     {
+         app.Logger.LogInformation($"Key: {kvp.Key}, Value: {kvp.Value}");
+     }
+     var x = sampleTodos.FirstOrDefault(a => a.Id == 2) is { } todo
+     ? Results.Ok(todo)
+     : Results.NotFound();
+    */
+   await SBusHelper.SendMessageToTopic(postData);
 return await Task.FromResult<string>(postData);
 });
 
