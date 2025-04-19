@@ -8,10 +8,15 @@ namespace SBusNet8AoTWin
     public class SBusHelper
     {
         // Connection string to your Service Bus namespace
-        private const string connectionString = "Endpoint=sb://sunsbstudent.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=9XbWvhJ/l+03GiGHld4dBbUY7GO4RS0Db+ASbCXwE8I=";
-
-        // Name of the topic
+        private static string connectionString = string.Empty;
         private const string topicName = "primarystudents";
+
+        internal static void Init(ConfigurationManager config)
+        {
+            // Ensure the connection string is not null or empty
+            connectionString = config.GetConnectionString("SBusConnectionString")
+                               ?? throw new InvalidOperationException("Connection string 'SBusConnectionString' is not configured.");
+        }
 
         internal static async Task SendMessageToTopic(string messageBody = "Hello, Service Bus!")
         {
@@ -22,7 +27,6 @@ namespace SBusNet8AoTWin
             ServiceBusSender sender = client.CreateSender(topicName);
 
             // Create a message to send
-            
             ServiceBusMessage message = new ServiceBusMessage(messageBody);
             message.PartitionKey = "student";
             message.SessionId = "S1";

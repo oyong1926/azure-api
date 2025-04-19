@@ -20,6 +20,7 @@ Debug.WriteLine($"ContentRoot Path: {builder.Environment.ContentRootPath}");
 Debug.WriteLine($"WebRootPath: {builder.Environment.WebRootPath}");
 
 var app = builder.Build();
+SBusHelper.Init(builder.Configuration);
 app.Logger.LogInformation("starting appservice studentrxr");
 
 app.UseHttpsRedirection();
