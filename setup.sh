@@ -27,6 +27,8 @@ printf "\nCreating API App ... (3/7)\n\n"
 
 az webapp create --name $apiappname --resource-group $RESOURCE_GROUP --plan $apiappname --deployment-local-git --verbose
 
+#Enable SCM Basic Auth Publishing Credentials
+az resource update --resource-group $RESOURCE_GROUP --name scm --namespace Microsoft.Web --resource-type basicPublishingCredentialsPolicies --parent sites/$apiappname --set properties.allow=true
 
 printf "\nSetting the account-level deployment credentials ...(4/7)\n\n"
 
